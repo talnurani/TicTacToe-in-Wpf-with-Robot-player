@@ -141,7 +141,21 @@ namespace TicTacToeWpf
                 else if (GameMatrix[0, i] == xo && GameMatrix[2, i] == xo && GameMatrix[1, i] == 0)
                     return new int[] { 1, i };
             }
-            //alachson
+            //alachson \:
+            if (GameMatrix[0, 0] == xo && GameMatrix[2, 2] == xo && GameMatrix[1, 1] == 0)
+                return new int[] { 1, 1 };
+            else if (GameMatrix[1, 1] == xo && GameMatrix[2, 2] == xo && GameMatrix[0, 0] == 0)
+                return new int[] { 0, 0 };
+            else if (GameMatrix[0, 0] == xo && GameMatrix[1,1] == xo && GameMatrix[2, 2] == 0)
+                return new int[] { 2, 2 };
+            //alachson /:
+            if (GameMatrix[2, 0] == xo && GameMatrix[0, 2] == xo && GameMatrix[1, 1] == 0)
+                return new int[] { 1, 1 };
+            else if (GameMatrix[1, 1] == xo && GameMatrix[0, 2] == xo && GameMatrix[2, 0] == 0)
+                return new int[] { 2, 0 };
+            else if (GameMatrix[2, 0] == xo && GameMatrix[1, 1] == xo && GameMatrix[0, 2] == 0)
+                return new int[] { 0, 2 };
+
             return null;
         }
         
