@@ -30,7 +30,8 @@
                     Grid.ColumnSpan="2"/>
             <Button Width="110" Height="36" Content="Start new game"
                 VerticalAlignment="Center"
-                Grid.Row="1" Grid.Column="0"/>
+                Grid.Row="1" Grid.Column="0"
+                    Name="GameOverButton" Click="GameOverButton_Click"/>
             <Border Grid.Row="1" Grid.Column="1"
                     Width="110" Height="36"
                     BorderThickness="1" BorderBrush="Black">
@@ -66,9 +67,15 @@
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
 
+            <Line Name="WinnerLineView" Visibility="Hidden"
+                X1="0" Y1="0" X2="240" Y2="240"
+                   Stroke="DarkRed" StrokeThickness="3" Panel.ZIndex="5"
+                   Grid.ColumnSpan="3" Grid.RowSpan="3"/>
+            
+
             <Button Name="Place00" 
                     Grid.Row="0" Grid.Column="0"
-                    Click="One_Click"/>
+                    Click="One_Click" Grid.ColumnSpan="3" Margin="0,0,10,10" Grid.RowSpan="3"/>
 
             <Button Name="Place10" 
                     Grid.Row="1" Grid.Column="0"

@@ -102,6 +102,8 @@ namespace TicTacToeWpf
             }
             catch (Exception ex)
             {
+                if (ex.Message == "winner")
+                    SomeoneWon();
                 StatusAndErrors.Text = ex.Message;
             }
         }
@@ -116,10 +118,35 @@ namespace TicTacToeWpf
             }
             catch (Exception ex)
             {
+
                 StatusAndErrors.Text = ex.Message;
-                RobotPlay();
+
+                if (BoardData.Steps<9)
+                    RobotPlay();
+
+                if (ex.Message == "winner")
+                    SomeoneWon();
             }
             
+        }
+        private void SomeoneWon()
+        {
+            WinnerLineView.X1 = BoardData.WinLine.X1;
+            WinnerLineView.X2 = BoardData.WinLine.X2;
+            WinnerLineView.Y1 = BoardData.WinLine.Y1;
+            WinnerLineView.Y2 = BoardData.WinLine.Y2;
+            WinnerLineView.Visibility = Visibility.Visible;
+
+            //disable all the buttons:
+            for (int i = 0; i < BoardView.GetLength(0); i++)
+                for (int j = 0; j < BoardView.GetLength(1); j++)
+                    BoardView[i, j].IsEnabled = false;
+        }
+
+        private void GameOverButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.BoardData= BoardData.GameOver();
+            UpdateBoardView();
         }
     }
 }

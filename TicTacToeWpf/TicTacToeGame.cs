@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Shapes;
 
 namespace TicTacToeWpf
 {
     public class TicTacToeGame
     {
         private static List<TicTacToeGame> OldGames = new List<TicTacToeGame>();
-        
+
         private int[,] gameMatrix;
         private int turn;
         private int steps;
+        private Line winLine;
 
         public int[,] GameMatrix
         {
@@ -28,6 +30,11 @@ namespace TicTacToeWpf
         {
             get { return steps; }
             private set { steps = value; }
+        }
+        public Line WinLine
+        {
+            get { return winLine; }
+            private set { winLine = value; }
         }
         Random rand;
         public TicTacToeGame()
@@ -71,6 +78,14 @@ namespace TicTacToeWpf
             GameMatrix[i, j] = player; //play
             steps++;
 
+            Line Winner = CheckWinner();
+            if (Winner != null)
+            {
+                WinLine = Winner;
+                throw new Exception("winner");
+            }
+                
+
             ChangeTurn(); //change the turn
             return true;
         }
@@ -101,18 +116,26 @@ namespace TicTacToeWpf
             //now, search where to put my xo:
             if (steps == 0) //if i'm the first
             {
-                int a = 0, b = 0;
-                if (rand.Next(2) == 1)
-                    a = 2;
-                if (rand.Next(2) == 1)
-                    b = 2;
-                Play(Turn, a, b);
+                PutRandomCorner();
 
                 return;
             }
 
             //Default for checking only:
             Play(turn, rand.Next(2), rand.Next(2));
+        }
+        /// <summary>
+        /// put randomaly in the corner
+        /// </summary>
+        /// <returns>true if succes</returns>
+        private bool PutRandomCorner()
+        {
+            int a = 0, b = 0;
+            if (rand.Next(2) == 1)
+                a = 2;
+            if (rand.Next(2) == 1)
+                b = 2;
+            return Play(Turn, a, b);
         }
         /// <summary>
         /// check if there are option to win and return the option. if don't have, return null;
@@ -158,7 +181,56 @@ namespace TicTacToeWpf
 
             return null;
         }
-        
-        //private int[] 
+        /// <summary>
+        /// check if someone won and return the line details [(x,y) points...]
+        /// </summary>
+        /// <returns>Line object that have the details to build the line</returns>
+        private Line CheckWinner()
+        {
+            //row:
+            for (int i = 0; i < GameMatrix.GetLength(0); i++)
+            {
+                if (GameMatrix[i, 0] == Turn && GameMatrix[i, 1] == Turn && GameMatrix[i, 2] == Turn)
+                    return new Line()
+                    {
+                        X1 = 0,
+                        Y1 = 40+80*i,
+                        X2 = 240,
+                        Y2 = 40 + 80 *i
+                    };
+            }
+            //column:
+            for (int i = 0; i < GameMatrix.GetLength(1); i++)
+            {
+                if (GameMatrix[0,i] == Turn && GameMatrix[1,i] == Turn && GameMatrix[2, i] == Turn)
+                    return new Line()
+                    {
+                        X1 = 40 + 80 * i,
+                        Y1 = 0,
+                        X2 = 40 + 80 * i,
+                        Y2 = 240
+                    };
+            }
+            //alachson \:
+            if (GameMatrix[0, 0] == Turn && GameMatrix[2, 2] == Turn && GameMatrix[1, 1] == Turn)
+                return new Line()
+                {
+                    X1 = 0,
+                    Y1 = 0,
+                    X2 = 240,
+                    Y2 = 240
+                };
+            //alachson /:
+            if (GameMatrix[2, 0] == Turn && GameMatrix[0, 2] == Turn && GameMatrix[1, 1] == Turn)
+                return new Line()
+                {
+                    X1 = 0,
+                    Y1 = 240,
+                    X2 = 240,
+                    Y2 = 0
+                };
+
+            return null;
+        }
     }
 }
