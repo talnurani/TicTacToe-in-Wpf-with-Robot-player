@@ -120,7 +120,19 @@ namespace TicTacToeWpf
 
                 return;
             }
-
+            if (steps==1) //if i'm the second:
+            {
+                if (gameMatrix[1,1]!=0) //if the second player put in the center, so put in corner:
+                {
+                    PutRandomCorner();
+                    return;
+                }
+                if (gameMatrix[0, 0] != 0 || gameMatrix[2, 2] != 0 || gameMatrix[2, 0] != 0 || gameMatrix[0, 2] != 0)
+                {
+                    Play(turn, 1, 1);
+                    return;
+                }
+            }
             //Default for checking only:
             Play(turn, rand.Next(2), rand.Next(2));
         }
