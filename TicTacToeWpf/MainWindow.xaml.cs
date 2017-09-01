@@ -120,17 +120,19 @@ namespace TicTacToeWpf
             {
 
                 StatusAndErrors.Text = ex.Message;
+                if (ex.Message == "winner")
+                { SomeoneWon(); return; }
 
                 if (BoardData.Steps<9)
                     RobotPlay();
 
-                if (ex.Message == "winner")
-                    SomeoneWon();
+                
             }
             
         }
         private void SomeoneWon()
         {
+            UpdateBoardView();
             WinnerLineView.X1 = BoardData.WinLine.X1;
             WinnerLineView.X2 = BoardData.WinLine.X2;
             WinnerLineView.Y1 = BoardData.WinLine.Y1;
@@ -146,6 +148,7 @@ namespace TicTacToeWpf
         private void GameOverButton_Click(object sender, RoutedEventArgs e)
         {
             this.BoardData= BoardData.GameOver();
+            WinnerLineView.Visibility = Visibility.Collapsed;
             UpdateBoardView();
         }
     }
